@@ -16,9 +16,8 @@
         </div>
         <nav class="side-nav">
             <ul>
-                <li><a href="#">NEW</a></li>
-                <li><a href="#">JEWELLERY</a></li>
-                <li><a href="#">EYEWEAR</a></li>
+                <li><a href="https://toeejewelry.cafe24.com" target="_blank">SHOP</a></li>
+                <li><a href="#meaning">MAIN COLLECTION</a></li>
                 <li><a href="#intro">ABOUT</a></li>
                 <li><a href="#closing">REVIEW</a></li>
             </ul>
@@ -222,12 +221,20 @@
 
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
+
         function nextSlide() {
+            // 모든 슬라이드에서 prev 클래스 제거
+            slides.forEach(s => s.classList.remove('prev'));
+            
+            // 현재 활성화된 슬라이드에 prev 클래스 부여 (왼쪽으로 나갈 준비)
             slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add('prev');
+
+            // 다음 슬라이드 활성화
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        setInterval(nextSlide, 2500);
+        setInterval(nextSlide, 3000);
 
         const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {

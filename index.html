@@ -22,9 +22,10 @@
 
         <nav>
             <ul class="nav-links">
-                <li><a href="#intro">Philosophy</a></li>
-                <li><a href="#meaning">Meaning</a></li>
-                <li><a href="#vision">Vision</a></li>
+                <li><a href="https://toeejewelry.cafe24.com" target="_blank">SHOP</a></li>
+                <li><a href="#meaning">MAIN COLLECTION</a></li>
+                <li><a href="#intro">ABOUT</a></li>
+                <li><a href="#closing">REVIEW</a></li>
             </ul>
         </nav>
     </header>
@@ -74,6 +75,15 @@
                 <div class="mouse"></div>
             </div>
         </section>
+
+        <!-- 우측 고정 내비게이션 -->
+        <div class="slider-nav">
+            <span class="nav-item active" data-target="home">01</span>
+            <span class="nav-item" data-target="intro">02</span>
+            <span class="nav-item" data-target="meaning">03</span>
+            <span class="nav-item" data-target="vision">04</span>
+            <span class="nav-item" data-target="closing">05</span>
+        </div>
 
 
         <!-- 이하 스토리 섹션들 유지 -->
@@ -169,23 +179,71 @@
             navLinks.classList.toggle('active');
         });
 
+        // Intersection Observer for Section Navigation (01-05) - Left Side
+        const sections = document.querySelectorAll('section, .main-slider, .closing');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        const navObserverOptions = { threshold: 0.5 };
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let targetId = entry.target.id;
+                    if (entry.target.classList.contains('main-slider')) targetId = 'home';
+                    if (entry.target.classList.contains('closing')) targetId = 'closing';
+
+                    const headerLinks = document.querySelectorAll('.nav-links a');
+
+                    navItems.forEach(item => {
+                        item.classList.toggle('active', item.getAttribute('data-target') === targetId);
+                    });
+
+                    // 헤더 메뉴 활성화 로직 추가
+                    headerLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (targetId === 'home' && href.includes('cafe24')) {
+                            link.classList.add('active');
+                        } else if (href === '#' + targetId || (targetId === 'closing' && href === '#closing')) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        }, navObserverOptions);
+
+        sections.forEach(section => navObserver.observe(section));
+
+        // Click to scroll
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetId = item.getAttribute('data-target');
+                let targetElement = targetId === 'home' ? document.querySelector('.main-slider') : (targetId === 'closing' ? document.querySelector('.closing') : document.getElementById(targetId));
+                if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
         // Main Slider Logic
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         function nextSlide() {
+            // 모든 슬라이드에서 prev 클래스 제거
+            slides.forEach(s => s.classList.remove('prev'));
+
+            // 현재 활성화된 슬라이드에 prev 클래스 부여 (왼쪽으로 나갈 준비)
             slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add('prev');
+
+            // 다음 슬라이드 활성화
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        setInterval(nextSlide, 2500); // 3500 -> 2500으로 속도 추가 향상
+        setInterval(nextSlide, 3000);
 
-        // Fade-in on Scroll (Existing)
+        // Fade-in on Scroll
         const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
         }, { threshold: 0.1 });
 

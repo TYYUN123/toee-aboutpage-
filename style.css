@@ -58,10 +58,35 @@ header {
 }
 .nav-links { display: flex; list-style: none; gap: 40px; }
 .nav-links a {
-    text-decoration: none; color: #fff; font-size: 1rem; /* 0.65rem -> 1rem */
-    letter-spacing: 4px; opacity: 0.6; transition: var(--transition);
+    text-decoration: none; 
+    color: #fff; 
+    font-size: 0.9rem; 
+    font-weight: 700;
+    letter-spacing: 1.5px; 
+    opacity: 0.8; 
+    transition: 0.3s;
+    position: relative;
+    padding-bottom: 8px;
+    text-transform: uppercase;
 }
-.nav-links a:hover { opacity: 1; }
+.nav-links a:hover { 
+    opacity: 1; 
+}
+/* 스크린샷 스타일의 하단 강조 라인 */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #fff;
+    transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
 
 /* 1. 메인 슬라이더 (기존 유지 및 고도화) */
 .main-slider { 
@@ -69,14 +94,38 @@ header {
     scroll-snap-align: start;
     scroll-snap-stop: always;
 }
-.slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
-.slide.active { opacity: 1; }
+.slide { 
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    opacity: 0; 
+    transform: translateX(30px); 
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+    z-index: 1;
+    visibility: hidden;
+}
+.slide.active { 
+    opacity: 1;
+    transform: translateX(0); 
+    z-index: 2;
+    visibility: visible;
+}
+.slide.prev {
+    opacity: 0;
+    transform: translateX(-10px); 
+    z-index: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
 .slide-bg {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-size: cover; background-position: center;
-    transform: scale(1.1); transition: transform 10s linear;
+    transform: scale(1);
 }
-.slide.active .slide-bg { transform: scale(1); }
+/* 불필요한 배경 애니메이션 제거로 눈의 피로도 감소 */
+.slide.active .slide-bg { 
+    animation: none;
+}
 .slide-content { 
     position: absolute; 
     top: 0; left: 0; 
@@ -101,6 +150,19 @@ header {
     text-transform: none;
 }
 .slide-content p { font-size: 1rem; letter-spacing: 1px; opacity: 0.6; line-height: 1.6; } /* 0.65rem -> 1rem */
+
+/* 힙한 텍스트 팝 애니메이션 */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.slide.active .fade-up {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.3s; /* 이미지 진입 후 살짝 늦게 튀어나옴 */
+}
 
 .story-section {
     position: relative;
@@ -291,6 +353,12 @@ footer p { font-size: 1rem; color: #444; letter-spacing: 2px; } /* 0.65rem -> 1r
     gap: 15px; 
     z-index: 2000;
 }
+
+/* 왼쪽 배치 (index.html 전용) */
+.slider-nav.nav-left {
+    right: auto !important;
+    left: 40px !important;
+}
 .nav-item { 
     width: auto; 
     height: auto; 
@@ -308,6 +376,17 @@ footer p { font-size: 1rem; color: #444; letter-spacing: 2px; } /* 0.65rem -> 1r
     font-weight: bold; 
     transform: scale(1.3);
     text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* 왼쪽 배치용 추가 스타일 */
+.nav-left {
+    right: auto !important;
+    left: 40px !important;
+    text-align: left !important;
+}
+
+.nav-left .nav-item {
+    text-align: left !important;
 }
 
 
