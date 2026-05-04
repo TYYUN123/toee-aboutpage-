@@ -7,25 +7,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans+KR:wght@100;300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="vertical-layout">
 
-    <header>
-        <div class="logo">
-            <img src="images/logo.png" alt="TOEE JEWELRY" class="logo-img">
+    <!-- 왼쪽 사이드 메뉴 -->
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <span class="close-btn" id="close-menu">&times; CLOSE</span>
         </div>
-        
-        <div class="menu-toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#intro">Philosophy</a></li>
-                <li><a href="#meaning">Meaning</a></li>
-                <li><a href="#vision">Vision</a></li>
+        <nav class="side-nav">
+            <ul>
+                <li><a href="#">NEW</a></li>
+                <li><a href="#">JEWELLERY</a></li>
+                <li><a href="#">EYEWEAR</a></li>
+                <li><a href="#intro">ABOUT</a></li>
+                <li><a href="#closing">REVIEW</a></li>
             </ul>
         </nav>
+        <div class="side-menu-footer">
+            <a href="#">Account</a>
+            <a href="#">Wishlist</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+
+    <header>
+        <!-- 왼쪽: 햄버거 메뉴 -->
+        <div class="menu-toggle" id="open-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <!-- 중앙: 로고 -->
+        <div class="logo">
+            <img src="images/logo.png" alt="" class="logo-img">
+        </div>
+
+        <!-- 오른쪽 (여백 유지 또는 필요시 아이콘 추가) -->
+        <div class="header-right"></div>
     </header>
 
     <main>
@@ -34,7 +53,7 @@
                 <div class="slide active">
                     <div class="slide-bg" style="background-image: url('images/상단 배너 이미지.png');"></div>
                     <div class="slide-content">
-                        <div class="top-text top-left fade-up">
+                        <div class="top-left-content fade-up">
                             <h2>Zippers ring</h2>
                             <p>A moment held in form</p>
                         </div>
@@ -86,9 +105,9 @@
             <div class="section-bg" style="background-image: url('images/brand_image_1.png');"></div>
             <div class="center-large-logo-wrapper">
                 <div class="center-large-logo fade-in">
-                    <img src="images/logo.png" alt="TOEE Logo">
+                    <img src="images/logo.png" alt="">
                     <p class="center-logo-desc">
-                        toee 토이는 자유를 위한 주얼리이며, express_표현하다, explore_탐험하다 라는 두 가치가 합쳐져<br>
+                        toee 토이는 express_표현하다, explore_탐험하다 라는 두 가치가 합쳐져<br>
                         아이의 순수한 동심을 나타내는 장난감처럼 자유로운 오브제라는 뜻을 가집니다.
                     </p>
                 </div>
@@ -148,17 +167,30 @@
 
     <footer>
         <div class="container">
-            <div class="logo" style="font-size: 1rem; margin-bottom: 20px;">TOEE JEWELRY</div>
+            <div class="logo" style="font-size: 1rem; margin-bottom: 20px;">TOEE</div>
             <p>&copy; 2024 TOEE JEWELRY. ALL RIGHTS RESERVED.</p>
         </div>
     </footer>
 
     <script>
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
+        // 사이드 메뉴 제어
+        const sideMenu = document.getElementById('side-menu');
+        const openBtn = document.getElementById('open-menu');
+        const closeBtn = document.getElementById('close-menu');
+
+        openBtn.addEventListener('click', () => {
+            sideMenu.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sideMenu.classList.remove('active');
+        });
+
+        // 메뉴 외부 클릭 시 닫기
+        document.addEventListener('click', (e) => {
+            if (!sideMenu.contains(e.target) && !openBtn.contains(e.target)) {
+                sideMenu.classList.remove('active');
+            }
         });
 
         // Navigation Script for Vertical Menu

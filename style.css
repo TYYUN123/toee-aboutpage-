@@ -570,3 +570,167 @@ footer p { font-size: 1rem; color: #444; letter-spacing: 2px; } /* 0.65rem -> 1r
     .marquee-content img { height: 220px; }
     .shop-btn { padding: 10px 35px; font-size: 0.7rem; letter-spacing: 2px; }
 }
+
+/* ============================================================
+   Vertical Layout Version (index_vertical.html)
+   ============================================================ */
+
+.vertical-layout header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    z-index: 1000;
+}
+
+.vertical-layout .logo {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: auto;
+    font-size: 0; /* 텍스트 노출 원천 차단 */
+    color: transparent;
+    line-height: 0;
+}
+
+.vertical-layout .logo::before,
+.vertical-layout .logo::after,
+.vertical-layout .logo img::before,
+.vertical-layout .logo img::after {
+    display: none !important; /* 가상 요소 차단 */
+    content: none !important;
+}
+
+.vertical-layout .logo img {
+    height: 110px;
+    display: block;
+}
+
+.vertical-layout .menu-toggle {
+    display: flex !important;
+    flex-direction: column;
+    gap: 7px;
+    cursor: pointer;
+    z-index: 1100;
+    width: 30px;
+}
+
+.vertical-layout .menu-toggle .bar {
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+    transition: 0.3s;
+}
+
+/* 사이드 메뉴 스타일 */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -100%; /* 완전히 숨김 */
+    width: 400px;
+    height: 100%;
+    background: #fff;
+    z-index: 3000;
+    transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 60px 50px;
+    box-shadow: 10px 0 50px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 480px) {
+    .side-menu { width: 100%; }
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+.side-menu-header {
+    margin-bottom: 80px;
+}
+
+.close-btn {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: #000;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.side-nav {
+    flex-grow: 1;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-nav ul li {
+    margin-bottom: 35px;
+}
+
+.side-nav ul li a {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: 0.4s;
+    display: block;
+}
+
+.side-nav ul li a:hover {
+    color: #888;
+    transform: translateX(10px);
+}
+
+.side-menu-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    border-top: 1px solid #eee;
+}
+
+.side-menu-footer a {
+    font-size: 0.8rem;
+    color: #aaa;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.side-menu-footer a:hover {
+    color: #000;
+}
+
+/* 메인 텍스트 위치 조정 (ZIPPERS RING) */
+.vertical-layout .top-left-content {
+    position: absolute;
+    top: 130px;
+    left: 40px;
+    text-align: left;
+    z-index: 10;
+}
+
+.vertical-layout .top-left-content h2 {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+}
+
+.vertical-layout .top-left-content p {
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    color: #fff;
+}
