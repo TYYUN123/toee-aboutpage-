@@ -10,24 +10,44 @@
 <body>
 
     <header>
+        <div class="header-left">
+            <div class="menu-trigger" id="menu-open">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+
         <div class="logo">
             <img src="images/logo.png" alt="TOEE JEWELRY" class="logo-img">
         </div>
         
-        <!-- 모바일 메뉴 토글 버튼 -->
-        <div class="menu-toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
+        <div class="header-right">
+            <!-- 우측 여백 또는 필요시 아이콘 배치 가능 -->
         </div>
+    </header>
 
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#intro">Philosophy</a></li>
-                <li><a href="#meaning">Meaning</a></li>
-                <li><a href="#vision">Vision</a></li>
+    <!-- 세로형 사이드바 메뉴 -->
+    <div class="side-menu" id="side-menu">
+        <div class="side-menu-header">
+            <button class="close-btn" id="menu-close">✕ Close</button>
+        </div>
+        <nav class="side-nav">
+            <ul class="side-category">
+                <li><a href="https://toeejewelry.cafe24.com/category/new/24/" target="_blank">NEW</a></li>
+                <li><a href="https://toeejewelry.cafe24.com/category/jewellery/25/" target="_blank">JEWELLERY</a></li>
+                <li><a href="https://toeejewelry.cafe24.com/category/eyewear/26/" target="_blank">EYEWEAR</a></li>
+                <li><a href="#intro" class="scroll-link">ABOUT</a></li>
+                <li><a href="https://toeejewelry.cafe24.com/board/review/4/" target="_blank">REVIEW</a></li>
+            </ul>
+            <ul class="side-footer-links">
+                <li><a href="#">Account</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="#">Support</a></li>
             </ul>
         </nav>
-    </header>
+    </div>
+    <div class="menu-overlay" id="menu-overlay"></div>
 
     <main>
         <!-- 새로운 '상단 배너 이미지' 슬라이더 -->
@@ -168,13 +188,26 @@
     </footer>
 
     <script>
-        // 모바일 메뉴 제어
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
+        // 사이드바 메뉴 제어
+        const menuOpen = document.getElementById('menu-open');
+        const menuClose = document.getElementById('menu-close');
+        const sideMenu = document.getElementById('side-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
 
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        }
+
+        menuOpen.addEventListener('click', toggleMenu);
+        menuClose.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        // 스크롤 링크 클릭 시 메뉴 닫기
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMenu();
+            });
         });
 
         // Intersection Observer for Section Navigation (01-05)
