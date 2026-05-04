@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEE JEWELRY | EXPLORE & EXPRESS</title>
+    <title>TOEE JEWELRY | Vertical Menu Version</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans+KR:wght@100;300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,7 +14,6 @@
             <img src="images/logo.png" alt="TOEE JEWELRY" class="logo-img">
         </div>
         
-        <!-- 모바일 메뉴 토글 버튼 -->
         <div class="menu-toggle" id="mobile-menu">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -30,7 +29,6 @@
     </header>
 
     <main>
-        <!-- 새로운 '상단 배너 이미지' 슬라이더 -->
         <section class="main-slider">
             <div class="slides">
                 <div class="slide active">
@@ -75,12 +73,17 @@
             </div>
         </section>
 
+        <!-- 우측 고정 내비게이션 (세로 메뉴 버전 전용) -->
+        <div class="slider-nav">
+            <span class="nav-item active" data-target="home">01</span>
+            <span class="nav-item" data-target="intro">02</span>
+            <span class="nav-item" data-target="meaning">03</span>
+            <span class="nav-item" data-target="vision">04</span>
+            <span class="nav-item" data-target="closing">05</span>
+        </div>
 
-        <!-- 이하 스토리 섹션들 유지 -->
         <section id="intro" class="story-section">
             <div class="section-bg" style="background-image: url('images/brand_image_1.png');"></div>
-            
-            <!-- 정중앙 대형 로고 -->
             <div class="center-large-logo-wrapper">
                 <div class="center-large-logo fade-in">
                     <img src="images/logo.png" alt="TOEE Logo">
@@ -96,8 +99,6 @@
             <div class="section-bg" style="background-image: url('images/brand_image_8.png');"></div>
         </section>
 
-
-
         <section id="vision" class="story-section">
             <div class="section-bg" style="background-image: url('images/상단 배너 이미지-5.png');"></div>
         </section>
@@ -105,7 +106,6 @@
         <section class="story-section closing">
             <div class="section-bg" style="background-image: url('images/상단 배너 이미지-4.png');"></div>
             <div class="closing-content fade-in">
-                <!-- 상단: 움직이는 이미지 슬라이더 -->
                 <div class="marquee-container">
                     <div class="marquee-content">
                         <img src="images/Frame 7.png" alt="Product 7">
@@ -119,7 +119,6 @@
                         <img src="images/Frame 15.png" alt="Product 15">
                         <img src="images/Frame 16.png" alt="Product 16">
                         <img src="images/Frame 17.png" alt="Product 17">
-                        <!-- 반복 -->
                         <img src="images/Frame 7.png" alt="Product 7">
                         <img src="images/Frame 8.png" alt="Product 8">
                         <img src="images/Frame 9.png" alt="Product 9">
@@ -133,8 +132,6 @@
                         <img src="images/Frame 17.png" alt="Product 17">
                     </div>
                 </div>
-
-                <!-- 중앙: 문구 -->
                 <div class="closing-text-wrapper">
                     <h2 class="closing-title">
                         <span class="line-sub">You don’t need to become someone else.</span>
@@ -142,15 +139,12 @@
                     </h2>
                     <p class="closing-desc">TOEE는 당신이 당신으로 존재하는 순간을 함께합니다.</p>
                 </div>
-
-                <!-- 하단: 버튼 -->
                 <div class="shop-cta">
                     <a href="https://toeejewelry.cafe24.com/skin-skin14" class="shop-btn" target="_blank">shop now</a>
                 </div>
             </div>
         </section>
     </main>
-
 
     <footer>
         <div class="container">
@@ -160,17 +154,40 @@
     </footer>
 
     <script>
-        // 모바일 메뉴 제어
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.querySelector('.nav-links');
-
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
 
+        // Navigation Script for Vertical Menu
+        const sections = document.querySelectorAll('section, .main-slider, .closing');
+        const navItems = document.querySelectorAll('.nav-item');
 
-        // Main Slider Logic
+        const navObserverOptions = { threshold: 0.5 };
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let targetId = entry.target.id;
+                    if (entry.target.classList.contains('main-slider')) targetId = 'home';
+                    if (entry.target.classList.contains('closing')) targetId = 'closing';
+                    navItems.forEach(item => {
+                        item.classList.toggle('active', item.getAttribute('data-target') === targetId);
+                    });
+                }
+            });
+        }, navObserverOptions);
+        sections.forEach(section => navObserver.observe(section));
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetId = item.getAttribute('data-target');
+                let targetElement = targetId === 'home' ? document.querySelector('.main-slider') : (targetId === 'closing' ? document.querySelector('.closing') : document.getElementById(targetId));
+                if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         function nextSlide() {
@@ -178,17 +195,13 @@
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        setInterval(nextSlide, 2500); // 3500 -> 2500으로 속도 추가 향상
+        setInterval(nextSlide, 2500);
 
-        // Fade-in on Scroll (Existing)
         const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.fade-in, .img-slide-up').forEach(el => fadeObserver.observe(el));
     </script>
 </body>
