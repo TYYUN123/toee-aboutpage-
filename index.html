@@ -70,17 +70,19 @@
                     </div>
                 </div>
             </div>
-            <div class="slider-nav">
-                <span class="nav-item active">01</span>
-                <span class="nav-item">02</span>
-                <span class="nav-item">03</span>
-                <span class="nav-item">04</span>
-            </div>
-
             <div class="scroll-indicator">
                 <div class="mouse"></div>
             </div>
         </section>
+
+        <!-- 우측 고정 내비게이션 (모든 섹션 공통) -->
+        <div class="slider-nav">
+            <span class="nav-item active" data-target="home">01</span>
+            <span class="nav-item" data-target="intro">02</span>
+            <span class="nav-item" data-target="meaning">03</span>
+            <span class="nav-item" data-target="vision">04</span>
+            <span class="nav-item" data-target="closing">05</span>
+        </div>
 
         <!-- 이하 스토리 섹션들 유지 -->
         <section id="intro" class="story-section">
@@ -91,8 +93,7 @@
                 <div class="center-large-logo fade-in">
                     <img src="images/logo.png" alt="TOEE Logo">
                     <p class="center-logo-desc">
-                        toee 토이는 자유를 위한 주얼리이며<br>
-                        express_표현하다, explore 탐험하다 라는 두개의 가치가 합쳐져<br>
+                        toee 토이는 자유를 위한 주얼리이며, express_표현하다, explore_탐험하다 라는 두 가치가 합쳐져<br>
                         아이의 순수한 동심을 나타내는 장난감처럼 자유로운 오브제라는 뜻을 가집니다.
                     </p>
                 </div>
@@ -112,14 +113,52 @@
         <section class="story-section closing">
             <div class="section-bg" style="background-image: url('images/상단 배너 이미지-4.png');"></div>
             <div class="closing-content fade-in">
-                <h2 class="closing-title">
-                    <span class="line-sub">You don’t need to become someone else.</span>
-                    <span class="line-main">Just be yourself.</span>
-                </h2>
-                <p class="closing-desc">TOEE는 당신이 당신으로 존재하는 순간을 함께합니다.</p>
+                <!-- 상단: 움직이는 이미지 슬라이더 -->
+                <div class="marquee-container">
+                    <div class="marquee-content">
+                        <img src="images/Frame 7.png" alt="Product 7">
+                        <img src="images/Frame 8.png" alt="Product 8">
+                        <img src="images/Frame 9.png" alt="Product 9">
+                        <img src="images/Frame 10.png" alt="Product 10">
+                        <img src="images/Frame 11.png" alt="Product 11">
+                        <img src="images/Frame 12.png" alt="Product 12">
+                        <img src="images/Frame 13.png" alt="Product 13">
+                        <img src="images/Frame 14.png" alt="Product 14">
+                        <img src="images/Frame 15.png" alt="Product 15">
+                        <img src="images/Frame 16.png" alt="Product 16">
+                        <img src="images/Frame 17.png" alt="Product 17">
+                        <!-- 반복 -->
+                        <img src="images/Frame 7.png" alt="Product 7">
+                        <img src="images/Frame 8.png" alt="Product 8">
+                        <img src="images/Frame 9.png" alt="Product 9">
+                        <img src="images/Frame 10.png" alt="Product 10">
+                        <img src="images/Frame 11.png" alt="Product 11">
+                        <img src="images/Frame 12.png" alt="Product 12">
+                        <img src="images/Frame 13.png" alt="Product 13">
+                        <img src="images/Frame 14.png" alt="Product 14">
+                        <img src="images/Frame 15.png" alt="Product 15">
+                        <img src="images/Frame 16.png" alt="Product 16">
+                        <img src="images/Frame 17.png" alt="Product 17">
+                    </div>
+                </div>
+
+                <!-- 중앙: 문구 -->
+                <div class="closing-text-wrapper">
+                    <h2 class="closing-title">
+                        <span class="line-sub">You don’t need to become someone else.</span>
+                        <span class="line-main">Just be yourself.</span>
+                    </h2>
+                    <p class="closing-desc">TOEE는 당신이 당신으로 존재하는 순간을 함께합니다.</p>
+                </div>
+
+                <!-- 하단: 버튼 -->
+                <div class="shop-cta">
+                    <a href="https://toeejewelry.cafe24.com/skin-skin14" class="shop-btn" target="_blank">shop now</a>
+                </div>
             </div>
         </section>
     </main>
+
 
     <footer>
         <div class="container">
@@ -138,54 +177,69 @@
             navLinks.classList.toggle('active');
         });
 
-        // 메뉴 링크 클릭 시 자동으로 닫히게 설정
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-            });
-        });
-
-        const slides = document.querySelectorAll('.slide');
+        // Intersection Observer for Section Navigation (01-05)
+        const sections = document.querySelectorAll('section, .main-slider, .closing');
         const navItems = document.querySelectorAll('.nav-item');
-        let current = 0;
-        function show(n) {
-            slides.forEach(s => s.classList.remove('active'));
-            navItems.forEach(i => i.classList.remove('active'));
-            slides[n].classList.add('active');
-            navItems[n].classList.add('active');
-        }
-        function next() { current = (current + 1) % slides.length; show(current); }
-        setInterval(next, 3500);
 
-        const observer = new IntersectionObserver((entries) => {
+        const navObserverOptions = {
+            threshold: 0.5
+        };
+
+        const navObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
+                    let targetId = entry.target.id;
+                    if (entry.target.classList.contains('main-slider')) targetId = 'home';
+                    if (entry.target.classList.contains('closing')) targetId = 'closing';
+
+                    navItems.forEach(item => {
+                        if (item.getAttribute('data-target') === targetId) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
                 }
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(el => {
-            el.style.opacity = "0";
-            el.style.transform = "translateY(30px)";
-            el.style.transition = "all 1.5s ease-out";
-            observer.observe(el);
+        }, navObserverOptions);
+
+        sections.forEach(section => navObserver.observe(section));
+
+        // Click to scroll
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetId = item.getAttribute('data-target');
+                let targetElement;
+                if (targetId === 'home') targetElement = document.querySelector('.main-slider');
+                else if (targetId === 'closing') targetElement = document.querySelector('.closing');
+                else targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
 
-        // 사진 슬라이드 업 애니메이션
-        const imgObserver = new IntersectionObserver((entries) => {
+        // Main Slider Logic
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 2500); // 3500 -> 2500으로 속도 추가 향상
+
+        // Fade-in on Scroll (Existing)
+        const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.section-bg, .column-bg').forEach(bg => {
-            bg.classList.add('img-slide-up');
-            imgObserver.observe(bg);
-        });
+        document.querySelectorAll('.fade-in, .img-slide-up').forEach(el => fadeObserver.observe(el));
     </script>
 </body>
 </html>
